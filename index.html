@@ -1,32 +1,71 @@
 <!DOCTYPE html>
-<html>
-<body>
-
-<p>Count numbers: <output id="result"></output></p>
-<button onclick="startWorker()">Start Worker</button>
-<button onclick="stopWorker()">Stop Worker</button>
-
-<script>
-var w;
-
-function startWorker() {
-  if (typeof(Worker) !== "undefined") {
-    if (typeof(w) == "undefined") {
-      w = new Worker("web-worker.js");
+<head>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
     }
-    w.onmessage = function(event) {
-      document.getElementById("result").innerHTML = event.data;
-    };
-  } else {
-    document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
-  }
-}
+    .result-panel {
+      font-size: 2em;
+    }
+    .button-panel button {
+      padding: 6px 12px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<html>
+  <body>
+    <div class="container">
+      <div class="result-panel">
+        <p>Count numbers: <output id="result"></output></p>
+      </div>
+      <div class="button-panel">
+        <button onclick="startWorker()">Start Worker</button>
+        <button onclick="stopWorker()">Stop Worker</button>
+      </div>
+    </div>
 
-function stopWorker() {
-  w.terminate();
-  w = undefined;
-}
-</script>
+    <script>
+      var w;
 
-</body>
+      function startWorker() {
+        // Before creating a web worker, check whether the user's browser supports it
+        if (typeof Worker !== 'undefined') {
+          
+          // The following lines checks if the worker already exists, 
+          // if not - it creates a new web worker object and runs the code in "demo_workers.js"
+          if (typeof w == 'undefined') {
+            w = new Worker('web-worker.js');
+          }
+
+          // Then we can send and receive messages from the web worker.
+          // Add an "onmessage" event listener to the web worker.
+          w.onmessage = function (event) {
+            // When the web worker posts a message, the code within the event listener is executed.
+            // The data from the web worker is stored in event.data.
+            document.getElementById('result').innerHTML = event.data;
+          };
+        } else {
+          // If not ...
+          document.getElementById('result').innerHTML = 'Sorry! No Web Worker support.';
+        }
+      }
+
+      function stopWorker() {
+        // When a web worker object is created,
+        // it will continue to listen for messages (even after the external script is finished)
+        // until it is terminated.
+        // To terminate a web worker, and free browser/computer resources, use the terminate() method:
+        w.terminate();
+        
+        // If you set the worker variable to undefined,
+        // after it has been terminated, you can reuse it:
+        w = undefined;
+      }
+    </script>
+  </body>
 </html>
