@@ -1,5 +1,7 @@
-var statusDisplay;
+// The Web Worker instance
 var worker;
+
+var statusDisplay;
 var searchButton;
 
 window.onload = function () {
@@ -25,15 +27,20 @@ function doSearch() {
 
     statusDisplay.innerHTML =
       'A web worker is on the job (' + fromNumber + ' to ' + toNumber + ') ...';
-  }
-  else {
+  } else {
     // Not support
   }
 }
 
+/**
+ * Web Worker's onmessage event
+ * @param {*} event
+ */
 function receivedWorkerMessage(event) {
+  //   console.log('event message', event);
   var message = event.data;
 
+  // Show Prime List
   if (message.messageType == 'PrimeList') {
     var primes = message.data;
 
@@ -52,20 +59,27 @@ function receivedWorkerMessage(event) {
       statusDisplay.innerHTML = 'The results are here!';
     }
     searchButton.disabled = false;
-  } else if (message.messageType == 'Progress') {
+  }
+  // Show Progress
+  else if (message.messageType == 'Progress') {
     statusDisplay.innerHTML = message.data + '% done ...';
   }
 }
 
+/**
+ * Web Worker's onerror event
+ * @param {*} error
+ */
 function workerError(error) {
   statusDisplay.innerHTML = error.message;
 }
 
 function cancelSearch() {
-    if (typeof worker !== 'undefined') {
-        worker.terminate();
-        worker = null;
-        statusDisplay.innerHTML = 'Search cancelled.';
-        searchButton.disabled = false;
-    }
+  // Terminate the Web Worker
+  if (typeof worker !== 'undefined') {
+    worker.terminate();
+    worker = null;
+    statusDisplay.innerHTML = 'Search cancelled.';
+    searchButton.disabled = false;
+  }
 }

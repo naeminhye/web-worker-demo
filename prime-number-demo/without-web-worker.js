@@ -11,11 +11,11 @@ function doSearch() {
 
   // Take the results, loop over it,
   // and paste it into one long piece of text.
-  var primeList = "";
-  for (var i=0; i<primes.length; i++) {
-    primeList += primes[i];
-    if (i != primes.length-1) primeList += ", ";
-  }
+  var primeList = primes.join(", ");
+  // for (var i=0; i<primes.length; i++) {
+  //   primeList += primes[i];
+  //   if (i != primes.length-1) primeList += ", ";
+  // }
   
   // Show the prime number list on the page.
   var primeContainer = document.getElementById("primeContainer");
