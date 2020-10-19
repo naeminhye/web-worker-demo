@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Prime Number Search</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<p>Do a prime number search from <input id="from" value="1"> to <input id="to" value="2000000" size="100">.</p>
+<button onclick="doSearch()" id="searchButton">Start Searching</button>
+<button onclick="cancelSearch()">Cancel</button>
+
+<div id="primeContainer">
+</div>
+
+<div id="status"></div>
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="./with-web-worker.js"></script>
+
+</body>
+</html>
