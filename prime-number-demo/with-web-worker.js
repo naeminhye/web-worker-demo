@@ -32,6 +32,16 @@ function doSearch() {
   }
 }
 
+function cancelSearch() {
+  // Terminate the Web Worker
+  if (typeof worker !== 'undefined') {
+    worker.terminate();
+    worker = null;
+    statusDisplay.innerHTML = 'Search cancelled.';
+    searchButton.disabled = false;
+  }
+}
+
 /**
  * Web Worker's onmessage event
  * @param {*} event
@@ -72,14 +82,4 @@ function receivedWorkerMessage(event) {
  */
 function workerError(error) {
   statusDisplay.innerHTML = error.message;
-}
-
-function cancelSearch() {
-  // Terminate the Web Worker
-  if (typeof worker !== 'undefined') {
-    worker.terminate();
-    worker = null;
-    statusDisplay.innerHTML = 'Search cancelled.';
-    searchButton.disabled = false;
-  }
 }
